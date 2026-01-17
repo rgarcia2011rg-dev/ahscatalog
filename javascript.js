@@ -341,7 +341,7 @@ checkboxes.gradeEleventh.addEventListener('change', function () {
     }  
 });
 
-checkboxes.gradetwelfth.addEventListener('change', function () {
+checkboxes.gradeTwelfth.addEventListener('change', function () {
     state = readState();
 
     if (state != null){
