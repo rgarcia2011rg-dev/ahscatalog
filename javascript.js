@@ -1,7 +1,7 @@
 
 class Grades {
     constructor(ninth, tenth, 
-                eleventh, twelfth  {
+                eleventh, twelfth)  {
       this.ninth = ninth;
       this.tenth = tenth;
       this.eleventh = eleventh;
@@ -341,11 +341,11 @@ checkboxes.gradeEleventh.addEventListener('change', function () {
     }  
 });
 
-checkboxes.gradeTwelveth.addEventListener('change', function () {
+checkboxes.gradetwelfth.addEventListener('change', function () {
     state = readState();
 
     if (state != null){
-        state.grades.twelveth = !state.grades.twelveth;
+        state.grades.twelfth = !state.grades.twelfth;
         writeState(state);
         updatePage();
     }  
@@ -443,8 +443,8 @@ function getGradesSelector(grades){
     if (grades.eleventh == true) {
         showSelector += '.eleventh-grade,';
     }
-    if (grades.twelveth == true) {
-        showSelector += '.twelveth-grade,';
+    if (grades.twelfth == true) {
+        showSelector += '.twelfth-grade,';
     }
     // Remove the final character from selectors
     showSelector = showSelector.slice(0, -1);
