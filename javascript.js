@@ -1,7 +1,7 @@
 
 class Grades {
     constructor(ninth, tenth, 
-                eleventh, twelveth) {
+                eleventh, twelfth  {
       this.ninth = ninth;
       this.tenth = tenth;
       this.eleventh = eleventh;
