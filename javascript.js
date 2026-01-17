@@ -5,7 +5,7 @@ class Grades {
       this.ninth = ninth;
       this.tenth = tenth;
       this.eleventh = eleventh;
-      this.twelfth = twelfth ;
+      this.twelfth = twelfth;
     }
 }
 
