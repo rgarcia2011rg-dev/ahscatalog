@@ -54,7 +54,7 @@ const checkboxes = {
     gradeNinth: document.querySelector('#ninthCheck'),
     gradeTenth: document.querySelector('#tenthCheck'),
     gradeEleventh: document.querySelector('#eleventhCheck'),
-    gradeTwelveth: document.querySelector('#twelvethCheck'), 
+    gradeTwelfth: document.querySelector('#twelfthCheck'), 
 
     courseDetails: document.querySelector('#detailsCheck'),
     electives: document.querySelector('#electives'),
