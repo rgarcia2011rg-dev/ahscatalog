@@ -148,8 +148,8 @@ function updatePage() {
         if (checkboxes.gradeEleventh != null){
             checkboxes.gradeEleventh.checked = state.grades.eleventh;
         }
-        if (checkboxes.gradeTwelveth != null){
-            checkboxes.gradeTwelveth.checked = state.grades.twelveth;
+        if (checkboxes.gradeTwelfth != null){
+            checkboxes.gradeTwelfth.checked = state.grades.twelfth;
         }
 
         // Course Details checkbox
