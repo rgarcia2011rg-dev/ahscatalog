@@ -219,7 +219,30 @@ function showHideGrades() {
 
 // Departments
 function getDepartmentsSelector(d) {
-    return Object.entries(d)
+    return [
+const deptMap = {
+  deptCTE: "cte",
+  deptELA: "ela",
+  deptFA: "fa",
+  deptGEN: "gen",
+  deptJROTC: "jrotc",
+  deptMATH: "math",
+  deptMCNL: "mcnl",
+  deptPE: "pe",
+  deptSCI: "sci",
+  deptSPED: "sped",
+  deptSS: "ss",
+};
+Object.entries(deptMap).forEach(([checkboxKey, stateKey]) => {
+  const el = checkboxes[checkboxKey];
+  if (!el) return;
+
+  el.addEventListener("change", () =>
+    toggleState(() => state.departments[stateKey] = !state.departments[stateKey])
+  );
+});
+
+        Object.entries(d)
         .filter(([_, v]) => v)
         .map(([k]) => `.Dept-${k.toUpperCase()}`)
         .join(',');
