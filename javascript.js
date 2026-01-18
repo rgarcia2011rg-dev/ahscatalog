@@ -177,11 +177,9 @@ function updatePage() {
   if (checkboxes.courseDetails) checkboxes.courseDetails.checked = state.courseDetails;
 
   // Apply filters
-  showHideDepartments();
-  showHideGrades();
-  showHideCore();
-  showHideHours();
-  showHideClass("course-details", state.courseDetails);
+  applyAllFilters();
+showHideClass("course-details", state.courseDetails);
+
 }
 
 // ---------- FILTERING ----------
@@ -256,6 +254,46 @@ function showHideHours() {
     .join(",");
 
   showHide(show, ".zero-hour, .eighth-hour, .regular-hour");
+}
+function applyAllFilters() {
+  const courses = document.querySelectorAll(".department-div");
+
+  courses.forEach((course) => {
+    // ----- Department match -----
+    const deptOk =
+      (state.departments.cte && course.classList.contains("Dept-CTE")) ||
+      (state.departments.ela && course.classList.contains("Dept-ELA")) ||
+      (state.departments.fa && course.classList.contains("Dept-FA")) ||
+      (state.departments.gen && course.classList.contains("Dept-GEN")) ||
+      (state.departments.jrotc && course.classList.contains("Dept-JROTC")) ||
+      (state.departments.math && course.classList.contains("Dept-MATH")) ||
+      (state.departments.mcnl && course.classList.contains("Dept-MCNL")) ||
+      (state.departments.pe && course.classList.contains("Dept-PE")) ||
+      (state.departments.sci && course.classList.contains("Dept-SCI")) ||
+      (state.departments.sped && course.classList.contains("Dept-SPED")) ||
+      (state.departments.ss && course.classList.contains("Dept-SS"));
+
+    // ----- Grade match -----
+    const gradeOk =
+      (state.grades.ninth && course.classList.contains("ninth-grade")) ||
+      (state.grades.tenth && course.classList.contains("tenth-grade")) ||
+      (state.grades.eleventh && course.classList.contains("eleventh-grade")) ||
+      (state.grades.twelfth && course.classList.contains("twelfth-grade"));
+
+    // ----- Core Replacement match -----
+    const coreOk =
+      (state.coreReplacement.yes && course.classList.contains("core-replacement")) ||
+      (state.coreReplacement.no && course.classList.contains("not-core-replacement"));
+
+    // ----- Hours match -----
+    const hourOk =
+      (state.hours.zero && course.classList.contains("zero-hour")) ||
+      (state.hours.eighth && course.classList.contains("eighth-hour")) ||
+      (state.hours.regular && course.classList.contains("regular-hour"));
+
+    const show = deptOk && gradeOk && coreOk && hourOk;
+    course.style.display = show ? "block" : "none";
+  });
 }
 
 
