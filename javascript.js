@@ -1,4 +1,4 @@
-        class Grades {
+       class Grades {
   constructor(ninth, tenth, eleventh, twelfth) {
     this.ninth = ninth;
     this.tenth = tenth;
@@ -55,11 +55,11 @@ const checkboxes = {
   gradeEleventh: document.querySelector("#eleventhCheck"),
   gradeTwelfth: document.querySelector("#twelfthCheck"),
 
-  // Core Replacement
+  // Core Replacement (NEW)
   coreYes: document.querySelector("#coreReplacement"),
   coreNo: document.querySelector("#notCoreReplacement"),
 
-  // Hours
+  // Hours (NEW)
   hourZero: document.querySelector("#zeroHour"),
   hourEight: document.querySelector("#eighthHour"),
   hourRegular: document.querySelector("#regularHour"),
@@ -89,177 +89,105 @@ function init() {
   if (saved) state = saved;
   else writeState(state);
 
-  attachEventListeners();
+  attachListeners();
   updatePage();
 }
 
-// ---------- EVENT HELPERS ----------
-function toggleState(mutator) {
-  const s = readState();
-  if (s) state = s;
+function attachListeners() {
+  // Safe add listener (prevents crashing if an element is missing)
+  function on(el, fn) {
+    if (!el) return;
+    el.addEventListener("change", fn);
+  }
 
+  // Departments
+  on(checkboxes.deptCTE, () => toggle(() => (state.departments.cte = !state.departments.cte)));
+  on(checkboxes.deptELA, () => toggle(() => (state.departments.ela = !state.departments.ela)));
+  on(checkboxes.deptFA, () => toggle(() => (state.departments.fa = !state.departments.fa)));
+  on(checkboxes.deptGEN, () => toggle(() => (state.departments.gen = !state.departments.gen)));
+  on(checkboxes.deptJROTC, () => toggle(() => (state.departments.jrotc = !state.departments.jrotc)));
+  on(checkboxes.deptMATH, () => toggle(() => (state.departments.math = !state.departments.math)));
+  on(checkboxes.deptMCNL, () => toggle(() => (state.departments.mcnl = !state.departments.mcnl)));
+  on(checkboxes.deptPE, () => toggle(() => (state.departments.pe = !state.departments.pe)));
+  on(checkboxes.deptSCI, () => toggle(() => (state.departments.sci = !state.departments.sci)));
+  on(checkboxes.deptSPED, () => toggle(() => (state.departments.sped = !state.departments.sped)));
+  on(checkboxes.deptSS, () => toggle(() => (state.departments.ss = !state.departments.ss)));
+
+  // Grades
+  on(checkboxes.gradeNinth, () => toggle(() => (state.grades.ninth = !state.grades.ninth)));
+  on(checkboxes.gradeTenth, () => toggle(() => (state.grades.tenth = !state.grades.tenth)));
+  on(checkboxes.gradeEleventh, () => toggle(() => (state.grades.eleventh = !state.grades.eleventh)));
+  on(checkboxes.gradeTwelfth, () => toggle(() => (state.grades.twelfth = !state.grades.twelfth)));
+
+  // Core replacement
+  on(checkboxes.coreYes, () => toggle(() => (state.coreReplacement.yes = !state.coreReplacement.yes)));
+  on(checkboxes.coreNo, () => toggle(() => (state.coreReplacement.no = !state.coreReplacement.no)));
+
+  // Hours
+  on(checkboxes.hourZero, () => toggle(() => (state.hours.zero = !state.hours.zero)));
+  on(checkboxes.hourEight, () => toggle(() => (state.hours.eighth = !state.hours.eighth)));
+  on(checkboxes.hourRegular, () => toggle(() => (state.hours.regular = !state.hours.regular)));
+
+  // Details
+  on(checkboxes.courseDetails, () => toggle(() => (state.courseDetails = !state.courseDetails)));
+}
+
+function toggle(mutator) {
+  const saved = readState();
+  if (saved) state = saved;
   mutator();
   writeState(state);
   updatePage();
 }
 
-function safeOnChange(el, fn) {
-  if (!el) return; // prevents runtime crash if HTML checkbox is missing
-  el.addEventListener("change", fn);
-}
-
-// ---------- ATTACH LISTENERS (runs once) ----------
-function attachEventListeners() {
-  // Grades
-  safeOnChange(checkboxes.gradeNinth, () => toggleState(() => (state.grades.ninth = !state.grades.ninth)));
-  safeOnChange(checkboxes.gradeTenth, () => toggleState(() => (state.grades.tenth = !state.grades.tenth)));
-  safeOnChange(checkboxes.gradeEleventh, () => toggleState(() => (state.grades.eleventh = !state.grades.eleventh)));
-  safeOnChange(checkboxes.gradeTwelfth, () => toggleState(() => (state.grades.twelfth = !state.grades.twelfth)));
-
-  // Core Replacement
-  safeOnChange(checkboxes.coreYes, () => toggleState(() => (state.coreReplacement.yes = !state.coreReplacement.yes)));
-  safeOnChange(checkboxes.coreNo, () => toggleState(() => (state.coreReplacement.no = !state.coreReplacement.no)));
-
-  // Hours
-  safeOnChange(checkboxes.hourZero, () => toggleState(() => (state.hours.zero = !state.hours.zero)));
-  safeOnChange(checkboxes.hourEight, () => toggleState(() => (state.hours.eighth = !state.hours.eighth)));
-  safeOnChange(checkboxes.hourRegular, () => toggleState(() => (state.hours.regular = !state.hours.regular)));
-
-  // Details
-  safeOnChange(checkboxes.courseDetails, () => toggleState(() => (state.courseDetails = !state.courseDetails)));
-
-  // Departments (THIS IS WHAT YOU WERE MISSING)
-  const deptMap = {
-    deptCTE: "cte",
-    deptELA: "ela",
-    deptFA: "fa",
-    deptGEN: "gen",
-    deptJROTC: "jrotc",
-    deptMATH: "math",
-    deptMCNL: "mcnl",
-    deptPE: "pe",
-    deptSCI: "sci",
-    deptSPED: "sped",
-    deptSS: "ss",
-  };
-
-  Object.entries(deptMap).forEach(([checkboxKey, stateKey]) => {
-    const el = checkboxes[checkboxKey];
-    safeOnChange(el, () => toggleState(() => (state.departments[stateKey] = !state.departments[stateKey])));
-  });
-}
-
 // ---------- UPDATE ----------
 function updatePage() {
-  // Sync checkbox UI from state (if checkbox exists)
-  // Departments
-  Object.keys(state.departments).forEach((key) => {
-    const el = document.querySelector(`#Dept-${key.toUpperCase()}`);
-    if (el) el.checked = state.departments[key];
-  });
+  // sync checkbox UI
+  if (checkboxes.deptCTE) checkboxes.deptCTE.checked = state.departments.cte;
+  if (checkboxes.deptELA) checkboxes.deptELA.checked = state.departments.ela;
+  if (checkboxes.deptFA) checkboxes.deptFA.checked = state.departments.fa;
+  if (checkboxes.deptGEN) checkboxes.deptGEN.checked = state.departments.gen;
+  if (checkboxes.deptJROTC) checkboxes.deptJROTC.checked = state.departments.jrotc;
+  if (checkboxes.deptMATH) checkboxes.deptMATH.checked = state.departments.math;
+  if (checkboxes.deptMCNL) checkboxes.deptMCNL.checked = state.departments.mcnl;
+  if (checkboxes.deptPE) checkboxes.deptPE.checked = state.departments.pe;
+  if (checkboxes.deptSCI) checkboxes.deptSCI.checked = state.departments.sci;
+  if (checkboxes.deptSPED) checkboxes.deptSPED.checked = state.departments.sped;
+  if (checkboxes.deptSS) checkboxes.deptSS.checked = state.departments.ss;
 
-  // Grades
   if (checkboxes.gradeNinth) checkboxes.gradeNinth.checked = state.grades.ninth;
   if (checkboxes.gradeTenth) checkboxes.gradeTenth.checked = state.grades.tenth;
   if (checkboxes.gradeEleventh) checkboxes.gradeEleventh.checked = state.grades.eleventh;
   if (checkboxes.gradeTwelfth) checkboxes.gradeTwelfth.checked = state.grades.twelfth;
 
-  // Core Replacement
   if (checkboxes.coreYes) checkboxes.coreYes.checked = state.coreReplacement.yes;
   if (checkboxes.coreNo) checkboxes.coreNo.checked = state.coreReplacement.no;
 
-  // Hours
   if (checkboxes.hourZero) checkboxes.hourZero.checked = state.hours.zero;
   if (checkboxes.hourEight) checkboxes.hourEight.checked = state.hours.eighth;
   if (checkboxes.hourRegular) checkboxes.hourRegular.checked = state.hours.regular;
 
-  // Details
   if (checkboxes.courseDetails) checkboxes.courseDetails.checked = state.courseDetails;
 
-  // Apply filters
+  // APPLY ALL FILTERS TOGETHER (THIS FIXES THE “NOT WORKING” FEELING)
   applyAllFilters();
-showHideClass("course-details", state.courseDetails);
 
+  // details toggle
+  showHideClass("course-details", state.courseDetails);
 }
 
-// ---------- FILTERING ----------
 function showHideClass(className, show) {
-  document.querySelectorAll(`.${className}`).forEach((el) => {
-    el.style.display = show ? "block" : "none";
-  });
+  const list = document.getElementsByClassName(className);
+  for (let i = 0; i < list.length; i++) {
+    list[i].style.display = show ? "block" : "none";
+  }
 }
 
-function showHide(showSelector, hideSelector) {
-  document.querySelectorAll(hideSelector).forEach((el) => {
-    el.style.display = "none";
-  });
-
-  if (!showSelector) return;
-
-  document.querySelectorAll(showSelector).forEach((el) => {
-    el.style.display = "block";
-  });
-}
-
-// Grades
-function getGradesSelector(g) {
-  return [
-    g.ninth && ".ninth-grade",
-    g.tenth && ".tenth-grade",
-    g.eleventh && ".eleventh-grade",
-    g.twelfth && ".twelfth-grade",
-  ]
-    .filter(Boolean)
-    .join(",");
-}
-
-function showHideGrades() {
-  // Requires every course element to have class "grade-level"
-  showHide(getGradesSelector(state.grades), ".grade-level");
-}
-
-// Departments
-function getDepartmentsSelector(d) {
-  return Object.entries(d)
-    .filter(([_, v]) => v)
-    .map(([k]) => `.Dept-${k.toUpperCase()}`)
-    .join(",");
-}
-
-function showHideDepartments() {
-  // Hides all courses then shows allowed departments
-  showHide(getDepartmentsSelector(state.departments), ".department-div");
-}
-
-// Core Replacement
-function showHideCore() {
-  const show = [
-    state.coreReplacement.yes && ".core-replacement",
-    state.coreReplacement.no && ".not-core-replacement",
-  ]
-    .filter(Boolean)
-    .join(",");
-
-  showHide(show, ".core-replacement, .not-core-replacement");
-}
-
-// Hours
-function showHideHours() {
-  const show = [
-    state.hours.zero && ".zero-hour",
-    state.hours.eighth && ".eighth-hour",
-    state.hours.regular && ".regular-hour",
-  ]
-    .filter(Boolean)
-    .join(",");
-
-  showHide(show, ".zero-hour, .eighth-hour, .regular-hour");
-}
+// ---------- COMBINED FILTER (intersection) ----------
 function applyAllFilters() {
   const courses = document.querySelectorAll(".department-div");
 
   courses.forEach((course) => {
-    // ----- Department match -----
     const deptOk =
       (state.departments.cte && course.classList.contains("Dept-CTE")) ||
       (state.departments.ela && course.classList.contains("Dept-ELA")) ||
@@ -273,28 +201,25 @@ function applyAllFilters() {
       (state.departments.sped && course.classList.contains("Dept-SPED")) ||
       (state.departments.ss && course.classList.contains("Dept-SS"));
 
-    // ----- Grade match -----
     const gradeOk =
       (state.grades.ninth && course.classList.contains("ninth-grade")) ||
       (state.grades.tenth && course.classList.contains("tenth-grade")) ||
       (state.grades.eleventh && course.classList.contains("eleventh-grade")) ||
       (state.grades.twelfth && course.classList.contains("twelfth-grade"));
 
-    // ----- Core Replacement match -----
     const coreOk =
       (state.coreReplacement.yes && course.classList.contains("core-replacement")) ||
       (state.coreReplacement.no && course.classList.contains("not-core-replacement"));
 
-    // ----- Hours match -----
     const hourOk =
       (state.hours.zero && course.classList.contains("zero-hour")) ||
       (state.hours.eighth && course.classList.contains("eighth-hour")) ||
       (state.hours.regular && course.classList.contains("regular-hour"));
 
-    const show = deptOk && gradeOk && coreOk && hourOk;
-    course.style.display = show ? "block" : "none";
+    course.style.display = deptOk && gradeOk && coreOk && hourOk ? "block" : "none";
   });
 }
+
 
 
 
