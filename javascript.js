@@ -59,11 +59,7 @@ const checkboxes = {
   coreYes: document.querySelector("#coreReplacement"),
   coreNo: document.querySelector("#notCoreReplacement"),
 
-  // Hours (NEW)
-  hourZero: document.querySelector("#zeroHour"),
-  hourEight: document.querySelector("#eighthHour"),
-  hourRegular: document.querySelector("#regularHour"),
-
+       
   // Details
   courseDetails: document.querySelector("#detailsCheck"),
 };
