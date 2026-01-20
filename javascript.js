@@ -8,7 +8,7 @@
 }
 
 class Departments {
-  constructor(cte, ela, fa, gen, jrotc, math, mcnl, pe, sci, sped, ss) {
+  constructor(cte, ela, fa, gen, jrotc, math, mcnl, pe, sci, sped, ss, health,) {
     this.cte = cte;
     this.ela = ela;
     this.fa = fa;
@@ -20,12 +20,13 @@ class Departments {
     this.sci = sci;
     this.sped = sped;
     this.ss = ss;
+    this.health = health;
   }
 }
 
 // ---------- STATE ----------
 let state = {
-  departments: new Departments(true, true, true, true, true, true, true, true, true, true, true),
+  departments: new Departments(true, true, true, true, true, true, true, true, true, true, true, true,),
   grades: new Grades(true, true, true, true),
 
   coreReplacement: { yes: true, no: true },
@@ -48,7 +49,7 @@ const checkboxes = {
   deptSCI: document.querySelector("#Dept-SCI"),
   deptSPED: document.querySelector("#Dept-SPED"),
   deptSS: document.querySelector("#Dept-SS"),
-
+  deptHEALTH: document.querySelector("#Dept-HEALTH"),
   // Grades
   gradeNinth: document.querySelector("#ninthCheck"),
   gradeTenth: document.querySelector("#tenthCheck"),
@@ -215,6 +216,18 @@ function applyAllFilters() {
     course.style.display = deptOk && gradeOk && coreOk && hourOk ? "block" : "none";
   });
 }
+function updateDepartmentHeadings() {
+  document.querySelectorAll(".dept-block").forEach(block => {
+    const hasVisibleCourse = Array.from(
+      block.querySelectorAll(".department-div")
+    ).some(course => course.style.display !== "none");
+
+    block.style.display = hasVisibleCourse ? "block" : "none";
+  });
+}
+function updatePage() {
+    ...
+
 
 
 
