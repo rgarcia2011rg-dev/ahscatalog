@@ -199,7 +199,7 @@ function applyAllFilters() {
       (state.departments.pe && course.classList.contains("Dept-PE")) ||
       (state.departments.sci && course.classList.contains("Dept-SCI")) ||
       (state.departments.sped && course.classList.contains("Dept-SPED")) ||
-      (state.departments.ss && course.classList.contains("Dept-SS")) ||
+      (state.departments.ss && course.classList.contains("Dept-SS"))||
       (state.departments.health && course.classList.contains("Dept-HEALTH"));
     const gradeOk =
       (state.grades.ninth && course.classList.contains("ninth-grade")) ||
