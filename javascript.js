@@ -229,10 +229,3 @@ function updateDepartmentHeadings() {
   });
 }
 function updatePage() {
-
-
-
-
-
-
-
