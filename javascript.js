@@ -30,7 +30,6 @@ let state = {
   grades: new Grades(true, true, true, true),
 
   coreReplacement: { yes: true, no: true },
-  hours: { zero: true, eighth: true, regular: true },
 
   courseDetails: false,
 };
@@ -61,7 +60,6 @@ const checkboxes = {
   coreYes: document.querySelector("#coreReplacement"),
   coreNo: document.querySelector("#notCoreReplacement"),
 
-       
   // Details
   courseDetails: document.querySelector("#detailsCheck"),
 };
