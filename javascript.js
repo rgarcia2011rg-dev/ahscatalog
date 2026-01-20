@@ -227,7 +227,5 @@ function updateDepartmentHeadings() {
 
     block.style.display = hasVisibleCourse ? "block" : "none";
   });
-}
-
-  autoHideEmptyDepartments(); // 
+       autoHideEmptyDepartments(); //  
 }
