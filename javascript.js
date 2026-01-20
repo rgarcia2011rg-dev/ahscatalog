@@ -228,4 +228,6 @@ function updateDepartmentHeadings() {
     block.style.display = hasVisibleCourse ? "block" : "none";
   });
 }
-function updatePage() }
+
+  autoHideEmptyDepartments(); // 
+}
