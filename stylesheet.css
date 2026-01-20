@@ -199,4 +199,23 @@ td.checkboxes-td {
   position: relative;
   top: 2px;
 }
+.course-header {
+  margin: 6px 0;
+}
+
+.course-number {
+  font-weight: 700;
+}
+
+.course-grades {
+  margin-left: 8px;
+  opacity: 0.8;
+}
+
+.details-link {
+  margin-left: 12px;
+  font-size: 0.95em;
+  text-decoration: underline;
+  cursor: pointer;
+}
 
