@@ -122,11 +122,6 @@ function attachListeners() {
   on(checkboxes.coreYes, () => toggle(() => (state.coreReplacement.yes = !state.coreReplacement.yes)));
   on(checkboxes.coreNo, () => toggle(() => (state.coreReplacement.no = !state.coreReplacement.no)));
 
-  // Hours
-  on(checkboxes.hourZero, () => toggle(() => (state.hours.zero = !state.hours.zero)));
-  on(checkboxes.hourEight, () => toggle(() => (state.hours.eighth = !state.hours.eighth)));
-  on(checkboxes.hourRegular, () => toggle(() => (state.hours.regular = !state.hours.regular)));
-
   // Details
   on(checkboxes.courseDetails, () => toggle(() => (state.courseDetails = !state.courseDetails)));
 }
@@ -162,10 +157,6 @@ function updatePage() {
 
   if (checkboxes.coreYes) checkboxes.coreYes.checked = state.coreReplacement.yes;
   if (checkboxes.coreNo) checkboxes.coreNo.checked = state.coreReplacement.no;
-
-  if (checkboxes.hourZero) checkboxes.hourZero.checked = state.hours.zero;
-  if (checkboxes.hourEight) checkboxes.hourEight.checked = state.hours.eighth;
-  if (checkboxes.hourRegular) checkboxes.hourRegular.checked = state.hours.regular;
 
   if (checkboxes.courseDetails) checkboxes.courseDetails.checked = state.courseDetails;
 
@@ -211,12 +202,8 @@ function applyAllFilters() {
       (state.coreReplacement.yes && course.classList.contains("core-replacement")) ||
       (state.coreReplacement.no && course.classList.contains("not-core-replacement"));
 
-    const hourOk =
-      (state.hours.zero && course.classList.contains("zero-hour")) ||
-      (state.hours.eighth && course.classList.contains("eighth-hour")) ||
-      (state.hours.regular && course.classList.contains("regular-hour"));
-
-    course.style.display = deptOk && gradeOk && coreOk && hourOk ? "block" : "none";
+document.querySelectorAll(".department-div").forEach(course => {
+    course.style.display = (deptOk && gradeOk && coreOk) ? "block" : "none";
   });
 }
 function updateDepartmentHeadings() {
@@ -227,5 +214,4 @@ function updateDepartmentHeadings() {
 
     block.style.display = hasVisibleCourse ? "block" : "none";
   });
-       autoHideEmptyDepartments(); //  
 }
