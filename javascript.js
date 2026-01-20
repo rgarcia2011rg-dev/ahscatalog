@@ -50,6 +50,7 @@ const checkboxes = {
   deptSPED: document.querySelector("#Dept-SPED"),
   deptSS: document.querySelector("#Dept-SS"),
   deptHEALTH: document.querySelector("#Dept-HEALTH"),
+       
   // Grades
   gradeNinth: document.querySelector("#ninthCheck"),
   gradeTenth: document.querySelector("#tenthCheck"),
@@ -109,6 +110,7 @@ function attachListeners() {
   on(checkboxes.deptSCI, () => toggle(() => (state.departments.sci = !state.departments.sci)));
   on(checkboxes.deptSPED, () => toggle(() => (state.departments.sped = !state.departments.sped)));
   on(checkboxes.deptSS, () => toggle(() => (state.departments.ss = !state.departments.ss)));
+  on(checkboxes.deptHEALTH, () => toggle(() => (state.departments.health = !state.departments.health)))
 
   // Grades
   on(checkboxes.gradeNinth, () => toggle(() => (state.grades.ninth = !state.grades.ninth)));
@@ -151,6 +153,7 @@ function updatePage() {
   if (checkboxes.deptSCI) checkboxes.deptSCI.checked = state.departments.sci;
   if (checkboxes.deptSPED) checkboxes.deptSPED.checked = state.departments.sped;
   if (checkboxes.deptSS) checkboxes.deptSS.checked = state.departments.ss;
+  if (checkboxes.deptHEALTH) checkboxes.depthealth.checked = state.departments.health;
 
   if (checkboxes.gradeNinth) checkboxes.gradeNinth.checked = state.grades.ninth;
   if (checkboxes.gradeTenth) checkboxes.gradeTenth.checked = state.grades.tenth;
@@ -196,8 +199,8 @@ function applyAllFilters() {
       (state.departments.pe && course.classList.contains("Dept-PE")) ||
       (state.departments.sci && course.classList.contains("Dept-SCI")) ||
       (state.departments.sped && course.classList.contains("Dept-SPED")) ||
-      (state.departments.ss && course.classList.contains("Dept-SS"));
-
+      (state.departments.ss && course.classList.contains("Dept-SS")); ||
+      (state.departments.health && course.classList.contains("Dept-HEALTH"));
     const gradeOk =
       (state.grades.ninth && course.classList.contains("ninth-grade")) ||
       (state.grades.tenth && course.classList.contains("tenth-grade")) ||
