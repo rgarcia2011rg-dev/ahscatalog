@@ -229,7 +229,7 @@ function updateDepartmentHeadings() {
   });
 }
 function updatePage() {
-    ...
+
 
 
 
