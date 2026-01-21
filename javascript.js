@@ -86,7 +86,6 @@ function init() {
   else writeState(state);
 
   attachListeners();
-  updatePage();
 }
 
 function attachListeners() {
@@ -129,10 +128,9 @@ function toggle(mutator) {
   if (saved) state = saved;
   mutator();
   writeState(state);
-  updatePage();
 }
 
-// ---------- UPDATE ----------
+
 function updatePage() {
   // sync checkbox UI
   if (checkboxes.deptCTE) checkboxes.deptCTE.checked = state.departments.cte;
@@ -174,22 +172,22 @@ function showHideClass(className, show) {
 
 // ---------- COMBINED FILTER (intersection) ----------
 function applyAllFilters() {
-  const courses = document.querySelectorAll(".department-div");
-
-  courses.forEach((course) => {
+  // --- APPLY FILTERS (dept + grade + core) ---
+  document.querySelectorAll(".department-div").forEach(course => {
     const deptOk =
       (state.departments.cte && course.classList.contains("Dept-CTE")) ||
       (state.departments.ela && course.classList.contains("Dept-ELA")) ||
       (state.departments.fa && course.classList.contains("Dept-FA")) ||
       (state.departments.gen && course.classList.contains("Dept-GEN")) ||
+      (state.departments.health && course.classList.contains("Dept-HEALTH")) ||
       (state.departments.jrotc && course.classList.contains("Dept-JROTC")) ||
       (state.departments.math && course.classList.contains("Dept-MATH")) ||
       (state.departments.mcnl && course.classList.contains("Dept-MCNL")) ||
       (state.departments.pe && course.classList.contains("Dept-PE")) ||
       (state.departments.sci && course.classList.contains("Dept-SCI")) ||
       (state.departments.sped && course.classList.contains("Dept-SPED")) ||
-      (state.departments.ss && course.classList.contains("Dept-SS")) ||
-      (state.departments.health && course.classList.contains("Dept-HEALTH"));
+      (state.departments.ss && course.classList.contains("Dept-SS"));
+
     const gradeOk =
       (state.grades.ninth && course.classList.contains("ninth-grade")) ||
       (state.grades.tenth && course.classList.contains("tenth-grade")) ||
@@ -200,10 +198,13 @@ function applyAllFilters() {
       (state.coreReplacement.yes && course.classList.contains("core-replacement")) ||
       (state.coreReplacement.no && course.classList.contains("not-core-replacement"));
 
-document.querySelectorAll(".department-div").forEach(course => {
     course.style.display = (deptOk && gradeOk && coreOk) ? "block" : "none";
   });
+
+  updateDepartmentHeadings();
+
 }
+
 function updateDepartmentHeadings() {
   document.querySelectorAll(".dept-block").forEach(block => {
     const hasVisibleCourse = Array.from(
@@ -213,3 +214,4 @@ function updateDepartmentHeadings() {
     block.style.display = hasVisibleCourse ? "block" : "none";
   });
 }
+
