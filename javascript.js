@@ -1,232 +1,190 @@
-class Grades {
-  constructor(ninth, tenth, eleventh, twelfth) {
-    this.ninth = ninth;
-    this.tenth = tenth;
-    this.eleventh = eleventh;
-    this.twelfth = twelfth;
-  }
-}
 
-class Departments {
-  constructor(cte, ela, fa, gen, jrotc, math, mcnl, pe, sci, sped, ss, health,) {
-    this.cte = cte;
-    this.ela = ela;
-    this.fa = fa;
-    this.gen = gen;
-    this.jrotc = jrotc;
-    this.math = math;
-    this.mcnl = mcnl;
-    this.pe = pe;
-    this.sci = sci;
-    this.sped = sped;
-    this.ss = ss;
-    this.health = health;
-  }
-}
+document.addEventListener("DOMContentLoaded", () => {
+  // ---------- DEFAULT STATE ----------
+  const defaultState = {
+    departments: {
+      cte: true,
+      ela: true,
+      fa: true,
+      gen: true,
+      health: true, // keep health
+      jrotc: true,
+      math: true,
+      mcnl: true,
+      pe: true,
+      sci: true,
+      sped: true,
+      ss: true,
+    },
+    grades: {
+      ninth: true,
+      tenth: true,
+      eleventh: true,
+      twelfth: true,
+    },
+    coreReplacement: {
+      yes: true,
+      no: true,
+    },
+    courseDetails: false,
+  };
 
-// ---------- STATE ----------
-let state = {
-  departments: new Departments(true, true, true, true, true, true, true, true, true, true, true, true,),
-  grades: new Grades(true, true, true, true),
+  // ---------- DOM HOOKS ----------
+  const checkboxes = {
+    // Departments (HTML ids must match)
+    deptCTE: document.querySelector("#Dept-CTE"),
+    deptELA: document.querySelector("#Dept-ELA"),
+    deptFA: document.querySelector("#Dept-FA"),
+    deptGEN: document.querySelector("#Dept-GEN"),
+    deptHEALTH: document.querySelector("#Dept-HEALTH"),
+    deptJROTC: document.querySelector("#Dept-JROTC"),
+    deptMATH: document.querySelector("#Dept-MATH"),
+    deptMCNL: document.querySelector("#Dept-MCNL"),
+    deptPE: document.querySelector("#Dept-PE"),
+    deptSCI: document.querySelector("#Dept-SCI"),
+    deptSPED: document.querySelector("#Dept-SPED"),
+    deptSS: document.querySelector("#Dept-SS"),
 
-  coreReplacement: { yes: true, no: true },
+    // Grades
+    gradeNinth: document.querySelector("#ninthCheck"),
+    gradeTenth: document.querySelector("#tenthCheck"),
+    gradeEleventh: document.querySelector("#eleventhCheck"),
+    gradeTwelfth: document.querySelector("#twelfthCheck"),
 
-  courseDetails: false,
-};
+    // Core Replacement
+    coreYes: document.querySelector("#coreReplacement"),
+    coreNo: document.querySelector("#notCoreReplacement"),
 
-// ---------- CHECKBOXES ----------
-const checkboxes = {
-  // Departments
-  deptCTE: document.querySelector("#Dept-CTE"),
-  deptELA: document.querySelector("#Dept-ELA"),
-  deptFA: document.querySelector("#Dept-FA"),
-  deptGEN: document.querySelector("#Dept-GEN"),
-  deptJROTC: document.querySelector("#Dept-JROTC"),
-  deptMATH: document.querySelector("#Dept-MATH"),
-  deptMCNL: document.querySelector("#Dept-MCNL"),
-  deptPE: document.querySelector("#Dept-PE"),
-  deptSCI: document.querySelector("#Dept-SCI"),
-  deptSPED: document.querySelector("#Dept-SPED"),
-  deptSS: document.querySelector("#Dept-SS"),
-  deptHEALTH: document.querySelector("#Dept-HEALTH"),
-       
-  // Grades
-  gradeNinth: document.querySelector("#ninthCheck"),
-  gradeTenth: document.querySelector("#tenthCheck"),
-  gradeEleventh: document.querySelector("#eleventhCheck"),
-  gradeTwelfth: document.querySelector("#twelfthCheck"),
+    // Details
+    courseDetails: document.querySelector("#detailsCheck"),
+  };
 
-  // Core Replacement (NEW)
-  coreYes: document.querySelector("#coreReplacement"),
-  coreNo: document.querySelector("#notCoreReplacement"),
-
-  // Details
-  courseDetails: document.querySelector("#detailsCheck"),
-};
-
-init();
-
-// ---------- STORAGE ----------
-function readState() {
-  try {
-    return JSON.parse(sessionStorage.state);
-  } catch {
-    return null;
-  }
-}
-
-function writeState(obj) {
-  sessionStorage.setItem("state", JSON.stringify(obj));
-}
-
-// ---------- INIT ----------
-function init() {
-  const saved = readState();
-  if (saved) state = saved;
-  else writeState(state);
-
-  attachListeners();
-  console.log("deptCTE element is:", checkboxes.deptCTE);
-
-if (checkboxes.deptCTE) {
-  checkboxes.deptCTE.addEventListener("change", () => {
-    console.log("CTE toggled!");
-  });
-}
-
-function attachListeners() {
-  // Safe add listener (prevents crashing if an element is missing)
-  function on(el, fn) {
-    if (!el) return;
-    el.addEventListener("change", fn);
+  // ---------- STORAGE ----------
+  function readState() {
+    try {
+      return JSON.parse(sessionStorage.getItem("state"));
+    } catch {
+      return null;
+    }
   }
 
-  // Departments
-  on(checkboxes.deptCTE, () => toggle(() => (state.departments.cte = !state.departments.cte)));
-  on(checkboxes.deptELA, () => toggle(() => (state.departments.ela = !state.departments.ela)));
-  on(checkboxes.deptFA, () => toggle(() => (state.departments.fa = !state.departments.fa)));
-  on(checkboxes.deptGEN, () => toggle(() => (state.departments.gen = !state.departments.gen)));
-  on(checkboxes.deptJROTC, () => toggle(() => (state.departments.jrotc = !state.departments.jrotc)));
-  on(checkboxes.deptMATH, () => toggle(() => (state.departments.math = !state.departments.math)));
-  on(checkboxes.deptMCNL, () => toggle(() => (state.departments.mcnl = !state.departments.mcnl)));
-  on(checkboxes.deptPE, () => toggle(() => (state.departments.pe = !state.departments.pe)));
-  on(checkboxes.deptSCI, () => toggle(() => (state.departments.sci = !state.departments.sci)));
-  on(checkboxes.deptSPED, () => toggle(() => (state.departments.sped = !state.departments.sped)));
-  on(checkboxes.deptSS, () => toggle(() => (state.departments.ss = !state.departments.ss)));
-  on(checkboxes.deptHEALTH, () => toggle(() => (state.departments.health = !state.departments.health)))
+  function writeState(s) {
+    sessionStorage.setItem("state", JSON.stringify(s));
+  }
 
-  // Grades
-  on(checkboxes.gradeNinth, () => toggle(() => (state.grades.ninth = !state.grades.ninth)));
-  on(checkboxes.gradeTenth, () => toggle(() => (state.grades.tenth = !state.grades.tenth)));
-  on(checkboxes.gradeEleventh, () => toggle(() => (state.grades.eleventh = !state.grades.eleventh)));
-  on(checkboxes.gradeTwelfth, () => toggle(() => (state.grades.twelfth = !state.grades.twelfth)));
+  // Merge saved state with defaults so new keys (like HEALTH) don’t break things
+  function normalizeState(saved) {
+    const s = saved && typeof saved === "object" ? saved : {};
+    s.departments = { ...defaultState.departments, ...(s.departments || {}) };
+    s.grades = { ...defaultState.grades, ...(s.grades || {}) };
+    s.coreReplacement = { ...defaultState.coreReplacement, ...(s.coreReplacement || {}) };
+    s.courseDetails = typeof s.courseDetails === "boolean" ? s.courseDetails : defaultState.courseDetails;
+    return s;
+  }
 
-  // Core replacement
-  on(checkboxes.coreYes, () => toggle(() => (state.coreReplacement.yes = !state.coreReplacement.yes)));
-  on(checkboxes.coreNo, () => toggle(() => (state.coreReplacement.no = !state.coreReplacement.no)));
-
-  // Details
-  on(checkboxes.courseDetails, () => toggle(() => (state.courseDetails = !state.courseDetails)));
-}
-
-function toggle(mutator) {
-  const saved = readState();
-  if (saved) state = saved;
-  mutator();
+  let state = normalizeState(readState());
   writeState(state);
-}
 
-
-function updatePage() {
-  // sync checkbox UI
-  if (checkboxes.deptCTE) checkboxes.deptCTE.checked = state.departments.cte;
-  if (checkboxes.deptELA) checkboxes.deptELA.checked = state.departments.ela;
-  if (checkboxes.deptFA) checkboxes.deptFA.checked = state.departments.fa;
-  if (checkboxes.deptGEN) checkboxes.deptGEN.checked = state.departments.gen;
-  if (checkboxes.deptJROTC) checkboxes.deptJROTC.checked = state.departments.jrotc;
-  if (checkboxes.deptMATH) checkboxes.deptMATH.checked = state.departments.math;
-  if (checkboxes.deptMCNL) checkboxes.deptMCNL.checked = state.departments.mcnl;
-  if (checkboxes.deptPE) checkboxes.deptPE.checked = state.departments.pe;
-  if (checkboxes.deptSCI) checkboxes.deptSCI.checked = state.departments.sci;
-  if (checkboxes.deptSPED) checkboxes.deptSPED.checked = state.departments.sped;
-  if (checkboxes.deptSS) checkboxes.deptSS.checked = state.departments.ss;
-  if (checkboxes.deptHEALTH) checkboxes.depthealth.checked = state.departments.health;
-
-  if (checkboxes.gradeNinth) checkboxes.gradeNinth.checked = state.grades.ninth;
-  if (checkboxes.gradeTenth) checkboxes.gradeTenth.checked = state.grades.tenth;
-  if (checkboxes.gradeEleventh) checkboxes.gradeEleventh.checked = state.grades.eleventh;
-  if (checkboxes.gradeTwelfth) checkboxes.gradeTwelfth.checked = state.grades.twelfth;
-
-  if (checkboxes.coreYes) checkboxes.coreYes.checked = state.coreReplacement.yes;
-  if (checkboxes.coreNo) checkboxes.coreNo.checked = state.coreReplacement.no;
-
-  if (checkboxes.courseDetails) checkboxes.courseDetails.checked = state.courseDetails;
-
-  // APPLY ALL FILTERS TOGETHER (THIS FIXES THE “NOT WORKING” FEELING)
-  applyAllFilters();
-
-  // details toggle
-  showHideClass("course-details", state.courseDetails);
-}
-
-function showHideClass(className, show) {
-  const list = document.getElementsByClassName(className);
-  for (let i = 0; i < list.length; i++) {
-    list[i].style.display = show ? "block" : "none";
+  // ---------- HELPERS ----------
+  function on(el, handler) {
+    if (!el) return;
+    el.addEventListener("change", handler);
   }
-}
 
-// ---------- COMBINED FILTER (intersection) ----------
-function applyAllFilters() {
-  // --- APPLY FILTERS (dept + grade + core) ---
-document.querySelectorAll(".department-div").forEach(course => {
+  function toggle(mutator) {
+    state = normalizeState(readState());
+    mutator(state);
+    writeState(state);
+    updatePage();
+  }
 
-  const deptOk =
-    (state.departments.cte && course.classList.contains("Dept-CTE")) ||
-    (state.departments.ela && course.classList.contains("Dept-ELA")) ||
-    (state.departments.fa && course.classList.contains("Dept-FA")) ||
-    (state.departments.gen && course.classList.contains("Dept-GEN")) ||
-    (state.departments.jrotc && course.classList.contains("Dept-JROTC")) ||
-    (state.departments.math && course.classList.contains("Dept-MATH")) ||
-    (state.departments.mcnl && course.classList.contains("Dept-MCNL")) ||
-    (state.departments.pe && course.classList.contains("Dept-PE")) ||
-    (state.departments.sci && course.classList.contains("Dept-SCI")) ||
-    (state.departments.sped && course.classList.contains("Dept-SPED")) ||
-    (state.departments.ss && course.classList.contains("Dept-SS"));
+  // ---------- LISTENERS ----------
+  // Departments mapping: checkbox -> state key -> CSS class
+  const deptDefs = [
+    { el: checkboxes.deptCTE, key: "cte", cls: "Dept-CTE" },
+    { el: checkboxes.deptELA, key: "ela", cls: "Dept-ELA" },
+    { el: checkboxes.deptFA, key: "fa", cls: "Dept-FA" },
+    { el: checkboxes.deptGEN, key: "gen", cls: "Dept-GEN" },
+    { el: checkboxes.deptHEALTH, key: "health", cls: "Dept-HEALTH" },
+    { el: checkboxes.deptJROTC, key: "jrotc", cls: "Dept-JROTC" },
+    { el: checkboxes.deptMATH, key: "math", cls: "Dept-MATH" },
+    { el: checkboxes.deptMCNL, key: "mcnl", cls: "Dept-MCNL" },
+    { el: checkboxes.deptPE, key: "pe", cls: "Dept-PE" },
+    { el: checkboxes.deptSCI, key: "sci", cls: "Dept-SCI" },
+    { el: checkboxes.deptSPED, key: "sped", cls: "Dept-SPED" },
+    { el: checkboxes.deptSS, key: "ss", cls: "Dept-SS" },
+  ];
 
-  const gradeOk =
-    (state.grades.ninth && course.classList.contains("ninth-grade")) ||
-    (state.grades.tenth && course.classList.contains("tenth-grade")) ||
-    (state.grades.eleventh && course.classList.contains("eleventh-grade")) ||
-    (state.grades.twelfth && course.classList.contains("twelfth-grade"));
+  deptDefs.forEach(({ el, key }) => {
+    on(el, () => toggle(s => (s.departments[key] = !s.departments[key])));
+  });
 
-  const coreOk =
-    (state.coreReplacement.yes && course.classList.contains("core-replacement")) ||
-    (state.coreReplacement.no && course.classList.contains("not-core-replacement"));
+  // Grades
+  on(checkboxes.gradeNinth, () => toggle(s => (s.grades.ninth = !s.grades.ninth)));
+  on(checkboxes.gradeTenth, () => toggle(s => (s.grades.tenth = !s.grades.tenth)));
+  on(checkboxes.gradeEleventh, () => toggle(s => (s.grades.eleventh = !s.grades.eleventh)));
+  on(checkboxes.gradeTwelfth, () => toggle(s => (s.grades.twelfth = !s.grades.twelfth)));
 
-  // 🔍 DEBUG — ADD THIS HERE
-  if (course.classList.contains("Dept-CTE")) {
-    console.log("CTE course:", {
-      deptOk,
-      gradeOk,
-      coreOk,
-      classes: course.className
+  // Core Replacement
+  on(checkboxes.coreYes, () => toggle(s => (s.coreReplacement.yes = !s.coreReplacement.yes)));
+  on(checkboxes.coreNo, () => toggle(s => (s.coreReplacement.no = !s.coreReplacement.no)));
+
+  // Details
+  on(checkboxes.courseDetails, () => toggle(s => (s.courseDetails = !s.courseDetails)));
+
+
+  function updatePage() {
+    state = normalizeState(readState());
+
+    // Sync UI checkboxes from state
+    deptDefs.forEach(({ el, key }) => {
+      if (el) el.checked = !!state.departments[key];
+    });
+
+    if (checkboxes.gradeNinth) checkboxes.gradeNinth.checked = !!state.grades.ninth;
+    if (checkboxes.gradeTenth) checkboxes.gradeTenth.checked = !!state.grades.tenth;
+    if (checkboxes.gradeEleventh) checkboxes.gradeEleventh.checked = !!state.grades.eleventh;
+    if (checkboxes.gradeTwelfth) checkboxes.gradeTwelfth.checked = !!state.grades.twelfth;
+
+    if (checkboxes.coreYes) checkboxes.coreYes.checked = !!state.coreReplacement.yes;
+    if (checkboxes.coreNo) checkboxes.coreNo.checked = !!state.coreReplacement.no;
+
+    if (checkboxes.courseDetails) checkboxes.courseDetails.checked = !!state.courseDetails;
+
+    document.querySelectorAll(".course-details").forEach(el => {
+      el.style.display = state.courseDetails ? "block" : "none";
+    });
+
+    document.querySelectorAll(".department-div").forEach(course => {
+      
+      const deptOk = deptDefs.some(d => state.departments[d.key] && course.classList.contains(d.cls));
+
+
+      const gradeOk =
+        (state.grades.ninth && course.classList.contains("ninth-grade")) ||
+        (state.grades.tenth && course.classList.contains("tenth-grade")) ||
+        (state.grades.eleventh && course.classList.contains("eleventh-grade")) ||
+        (state.grades.twelfth && course.classList.contains("twelfth-grade"));
+
+      const coreOk =
+        (state.coreReplacement.yes && course.classList.contains("core-replacement")) ||
+        (state.coreReplacement.no && course.classList.contains("not-core-replacement"));
+
+      course.style.display = deptOk && gradeOk && coreOk ? "block" : "none";
+    });
+
+    updateDepartmentHeadings();
+  }
+
+  // Department “block” wrapper must be .dept-block and contain .department-div children
+  function updateDepartmentHeadings() {
+    document.querySelectorAll(".dept-block").forEach(block => {
+      const hasVisibleCourse = Array.from(block.querySelectorAll(".department-div"))
+        .some(course => course.style.display !== "none");
+
+      block.style.display = hasVisibleCourse ? "block" : "none";
     });
   }
-
-  course.style.display = (deptOk && gradeOk && coreOk) ? "block" : "none";
+ 
+  updatePage();
 });
-
-  updateDepartmentHeadings();
-}
-
-function updateDepartmentHeadings() {
-  document.querySelectorAll(".dept-block").forEach(block => {
-    const hasVisibleCourse = Array.from(
-      block.querySelectorAll(".department-div"))
-    .some(course => course.style.display !== "none");
-
-    block.style.display = hasVisibleCourse ? "block" : "none";
-  });
-}
-
