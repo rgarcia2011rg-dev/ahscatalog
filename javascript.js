@@ -1,4 +1,3 @@
-
 class Grades {
   constructor(ninth, tenth, eleventh, twelfth) {
     this.ninth = ninth;
