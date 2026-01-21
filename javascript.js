@@ -1,4 +1,5 @@
-       class Grades {
+alert("JS LOADED");
+class Grades {
   constructor(ninth, tenth, eleventh, twelfth) {
     this.ninth = ninth;
     this.tenth = tenth;
