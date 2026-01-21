@@ -206,8 +206,8 @@ function applyAllFilters() {
 function updateDepartmentHeadings() {
   document.querySelectorAll(".dept-block").forEach(block => {
     const hasVisibleCourse = Array.from(
-      block.querySelectorAll(".department-div")
-    ).some(course => course.style.display !== "none");
+      block.querySelectorAll(".department-div"))
+    .some(course => course.style.display !== "none");
 
     block.style.display = hasVisibleCourse ? "block" : "none";
   });
