@@ -94,8 +94,6 @@ if (checkboxes.deptCTE) {
   });
 }
 
-}
-
 function attachListeners() {
   // Safe add listener (prevents crashing if an element is missing)
   function on(el, fn) {
