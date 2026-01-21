@@ -200,9 +200,7 @@ function applyAllFilters() {
 
     course.style.display = (deptOk && gradeOk && coreOk) ? "block" : "none";
   });
-
   updateDepartmentHeadings();
-
 }
 
 function updateDepartmentHeadings() {
