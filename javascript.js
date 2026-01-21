@@ -1,4 +1,4 @@
-alert("JS LOADED");
+
 class Grades {
   constructor(ninth, tenth, eleventh, twelfth) {
     this.ninth = ninth;
@@ -87,6 +87,14 @@ function init() {
   else writeState(state);
 
   attachListeners();
+  console.log("deptCTE element is:", checkboxes.deptCTE);
+
+if (checkboxes.deptCTE) {
+  checkboxes.deptCTE.addEventListener("change", () => {
+    console.log("CTE toggled!");
+  });
+}
+
 }
 
 function attachListeners() {
