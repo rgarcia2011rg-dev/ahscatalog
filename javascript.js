@@ -179,40 +179,44 @@ function showHideClass(className, show) {
 // ---------- COMBINED FILTER (intersection) ----------
 function applyAllFilters() {
   // --- APPLY FILTERS (dept + grade + core) ---
-  document.querySelectorAll(".department-div").forEach(course => {if (course.classList.contains("Dept-CTE")) {
-  console.log("CTE course:", {
-    deptOk,
-    gradeOk,
-    coreOk,
-    classes: course.className
-  });
-}
-    const deptOk =
-      (state.departments.cte && course.classList.contains("Dept-CTE")) ||
-      (state.departments.ela && course.classList.contains("Dept-ELA")) ||
-      (state.departments.fa && course.classList.contains("Dept-FA")) ||
-      (state.departments.gen && course.classList.contains("Dept-GEN")) ||
-      (state.departments.health && course.classList.contains("Dept-HEALTH")) ||
-      (state.departments.jrotc && course.classList.contains("Dept-JROTC")) ||
-      (state.departments.math && course.classList.contains("Dept-MATH")) ||
-      (state.departments.mcnl && course.classList.contains("Dept-MCNL")) ||
-      (state.departments.pe && course.classList.contains("Dept-PE")) ||
-      (state.departments.sci && course.classList.contains("Dept-SCI")) ||
-      (state.departments.sped && course.classList.contains("Dept-SPED")) ||
-      (state.departments.ss && course.classList.contains("Dept-SS"));
+document.querySelectorAll(".department-div").forEach(course => {
 
-    const gradeOk =
-      (state.grades.ninth && course.classList.contains("ninth-grade")) ||
-      (state.grades.tenth && course.classList.contains("tenth-grade")) ||
-      (state.grades.eleventh && course.classList.contains("eleventh-grade")) ||
-      (state.grades.twelfth && course.classList.contains("twelfth-grade"));
+  const deptOk =
+    (state.departments.cte && course.classList.contains("Dept-CTE")) ||
+    (state.departments.ela && course.classList.contains("Dept-ELA")) ||
+    (state.departments.fa && course.classList.contains("Dept-FA")) ||
+    (state.departments.gen && course.classList.contains("Dept-GEN")) ||
+    (state.departments.jrotc && course.classList.contains("Dept-JROTC")) ||
+    (state.departments.math && course.classList.contains("Dept-MATH")) ||
+    (state.departments.mcnl && course.classList.contains("Dept-MCNL")) ||
+    (state.departments.pe && course.classList.contains("Dept-PE")) ||
+    (state.departments.sci && course.classList.contains("Dept-SCI")) ||
+    (state.departments.sped && course.classList.contains("Dept-SPED")) ||
+    (state.departments.ss && course.classList.contains("Dept-SS"));
 
-    const coreOk =
-      (state.coreReplacement.yes && course.classList.contains("core-replacement")) ||
-      (state.coreReplacement.no && course.classList.contains("not-core-replacement"));
+  const gradeOk =
+    (state.grades.ninth && course.classList.contains("ninth-grade")) ||
+    (state.grades.tenth && course.classList.contains("tenth-grade")) ||
+    (state.grades.eleventh && course.classList.contains("eleventh-grade")) ||
+    (state.grades.twelfth && course.classList.contains("twelfth-grade"));
 
-    course.style.display = (deptOk && gradeOk && coreOk) ? "block" : "none";
-  });
+  const coreOk =
+    (state.coreReplacement.yes && course.classList.contains("core-replacement")) ||
+    (state.coreReplacement.no && course.classList.contains("not-core-replacement"));
+
+  // 🔍 DEBUG — ADD THIS HERE
+  if (course.classList.contains("Dept-CTE")) {
+    console.log("CTE course:", {
+      deptOk,
+      gradeOk,
+      coreOk,
+      classes: course.className
+    });
+  }
+
+  course.style.display = (deptOk && gradeOk && coreOk) ? "block" : "none";
+});
+
   updateDepartmentHeadings();
 }
 
