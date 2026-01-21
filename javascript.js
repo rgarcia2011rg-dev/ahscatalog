@@ -181,7 +181,14 @@ function showHideClass(className, show) {
 // ---------- COMBINED FILTER (intersection) ----------
 function applyAllFilters() {
   // --- APPLY FILTERS (dept + grade + core) ---
-  document.querySelectorAll(".department-div").forEach(course => {
+  document.querySelectorAll(".department-div").forEach(course => {if (course.classList.contains("Dept-CTE")) {
+  console.log("CTE course:", {
+    deptOk,
+    gradeOk,
+    coreOk,
+    classes: course.className
+  });
+}
     const deptOk =
       (state.departments.cte && course.classList.contains("Dept-CTE")) ||
       (state.departments.ela && course.classList.contains("Dept-ELA")) ||
